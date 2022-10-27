@@ -74,4 +74,9 @@ public class Ball : MonoBehaviour
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
     }
+
+    private void OnDestroy()
+    {
+        EventManager.TriggerEvent(EventManager.onBallDestroyed);
+    }
 }

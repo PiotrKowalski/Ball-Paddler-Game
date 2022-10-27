@@ -25,6 +25,7 @@ public class EventManager : MonoBehaviour
     public static string onBallMultiply= "Ball.Multiply";
     public static string onBallSpawn= "Ball.Spawn";
     public static string onBallShot= "Ball.Shot";
+    public static string onBallDestroyed= "Ball.Destroyed";
 
 
     public static string onRefreshHealthInfo= "Info.RefreshHealth";

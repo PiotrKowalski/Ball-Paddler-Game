@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class GameController : MonoBehaviour
 
     public static int points = 0;
     private int maxPointsOnLevel;
+
 
     public int _health = 0;
     public int health
@@ -57,6 +59,7 @@ public class GameController : MonoBehaviour
 
 
     private UnityAction onBallSpawnListener;
+    private UnityAction onBallDestroyedListener;
 
 
     private static GameController gameController;
@@ -87,18 +90,21 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         onBallSpawnListener = new UnityAction(OnBallSpawn);
+        onBallDestroyedListener = new UnityAction(OnBallDestroyed);
     }
 
     void OnEnable()
     {
         EventManager.StartListening(EventManager.onPointDisabled, OnPointDisabled);
         EventManager.StartListening(EventManager.onBallSpawn, onBallSpawnListener);
+        EventManager.StartListening(EventManager.onBallDestroyed, onBallDestroyedListener);
     }
 
     void OnDisable()
     {
         EventManager.StopListening(EventManager.onPointDisabled, OnPointDisabled);
         EventManager.StopListening(EventManager.onBallSpawn, onBallSpawnListener);
+        EventManager.StopListening(EventManager.onBallDestroyed, onBallDestroyedListener);
     }
 
     private void OnPointDisabled(object data)
@@ -142,4 +148,21 @@ public class GameController : MonoBehaviour
         ballsToSpawn -= 1;
     }
 
+    private void OnBallDestroyed()
+    {
+        Ball[] balls = FindObjectsOfType<Ball>();
+        if (balls.Length != 0) {
+            return;
+        }
+
+        if (health == 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            return;
+        }
+
+
+        ballsToSpawn += 1;
+        health -= 1;
+    }
 }
