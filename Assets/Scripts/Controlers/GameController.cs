@@ -19,6 +19,24 @@ public class GameController : MonoBehaviour
             _level = value;
 
             EventManager.TriggerEvent(EventManager.onRefreshLevelInfo, _level);
+
+            if (_level % 2 == 0)
+            {
+                Point[] points = FindObjectsOfType<Point>();
+                var i = Random.Range(0, (points.Length -1));
+
+                points[i].type = PointTypes.Multiplier;
+            }
+
+            if (_level % 5 == 0)
+            {
+                Point[] points = FindObjectsOfType<Point>();
+                var i = Random.Range(0, (points.Length - 1));
+                points[i].type = PointTypes.Multiplier;
+
+                i = Random.Range(0, (points.Length - 1));
+                points[i].type = PointTypes.Health;
+            }
         }
     }
 
@@ -129,12 +147,21 @@ public class GameController : MonoBehaviour
         {
             ballsToSpawn += 1;
         }
+
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
         maxPointsOnLevel = FindObjectsOfType(typeof(Point)).Length;
+
+        Point[] points = FindObjectsOfType<Point>();
+        var i = Random.Range(0, (points.Length - 1));
+        points[i].type = PointTypes.Multiplier;
+
+        var j = Random.Range(0, (points.Length - 1));
+        points[j].type = PointTypes.Health;
     }
 
     // Update is called once per frame

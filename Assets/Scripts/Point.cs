@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,7 +14,21 @@ public enum PointTypes
 public class Point : MonoBehaviour
 {
 
-    public PointTypes type;
+    public PointTypes _type;
+    public PointTypes type
+    {
+        get
+        {
+            return _type;
+        }
+        set
+        {
+            _type = value;
+            UpdateTypeColor(_type);
+
+        }
+    }
+
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D colider;
     [SerializeField] public AudioClip deathEffect;
@@ -31,17 +46,7 @@ public class Point : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         colider = GetComponent<BoxCollider2D>();
 
-        switch (type) {
-            case PointTypes.Regular:
-                spriteRenderer.color = new Color32(178, 190, 195, 255);
-                break;
-            case PointTypes.Health:
-                spriteRenderer.color = new Color32(0, 184, 148, 255);
-                break;
-            case PointTypes.Multiplier:
-                spriteRenderer.color = new Color32(9, 132, 227, 255);
-                break;
-        }
+        UpdateTypeColor(type);
 
     }
 
@@ -78,4 +83,19 @@ public class Point : MonoBehaviour
     }
 
 
+    private void UpdateTypeColor(PointTypes type)
+    {
+        switch (type)
+        {
+            case PointTypes.Regular:
+                spriteRenderer.color = new Color32(178, 190, 195, 255);
+                break;
+            case PointTypes.Health:
+                spriteRenderer.color = new Color32(0, 184, 148, 255);
+                break;
+            case PointTypes.Multiplier:
+                spriteRenderer.color = new Color32(9, 132, 227, 255);
+                break;
+        }
+    }
 }
